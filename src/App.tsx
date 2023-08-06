@@ -9,9 +9,13 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import AddModal from './components/AddModal';
 import FilterSwitch from './components/FilterSwitch';
 import { FilterOption } from './entities/filter-option.enum';
+import ChooseUsernameModal from './components/ChooseUsernameModal';
+import { useCookies } from 'react-cookie';
 
 function App() {
-  const [modalOpen, setModalOpen] = useState(false);
+  const [addModalOpen, setAddModalOpen] = useState(false);
+  const [cookies, setCookie] = useCookies(['username']);
+  const [username, setUsername] = useState(cookies.username);
   const [filter, setFilter] = useState<FilterOption>(FilterOption.ALL);
   const { data, isLoading } = useQuery(
     queryKeys.movies,
@@ -57,12 +61,25 @@ function App() {
     setFilter(filter);
     setMovies(sortMovies(data ? data : [], filter));
   }
+
   const [movies, setMovies] = useState<Movie[]>(
     data ? sortMovies(data, FilterOption.ALL) : [],
   );
+  function handleChooseUsername(username: string) {
+    console.log('writing cookie');
+    setCookie('username', username);
+    setUsername(username);
+  }
   return (
     <>
-      <div className="font-sans flex p-8">
+      {username && (
+        <div className="flex gap-2 text-2xl text-light p-2 justify-end">
+          <p>Hello</p>
+          <p className="font-bold text-robin-egg">{username}</p>
+          <p>{'<3'}</p>
+        </div>
+      )}
+      <div className="font-sans flex px-8 py-4">
         {isLoading ? (
           <p className="text-2xl text-light">Loading...</p>
         ) : (
@@ -73,7 +90,7 @@ function App() {
               </p>
             ) : (
               <div className="flex flex-col pt-16">
-                <div className="flex items-center gap-4">
+                <div className="flex items-center gap-4 px-4">
                   <p className="text-2xl text-light">Eligible movies</p>
                   <FilterSwitch
                     onFilterChange={handleFilterChange}
@@ -94,21 +111,22 @@ function App() {
           </>
         )}
         <button
-          onClick={() => setModalOpen(true)}
+          onClick={() => setAddModalOpen(true)}
           className="fixed bottom-0 right-0 bg-pear p-4 m-8 rounded-full text-2xl flex items-center justify-center hover:bg-pear-hover transition"
         >
           <FontAwesomeIcon icon={faPlus} className="text-light text-2xl" />
         </button>
       </div>
-      <AddModal
-        open={modalOpen}
-        addMovie={(movie: Movie) => mutateAddMovie(movie)}
-        onClose={() => setModalOpen(false)}
+      <ChooseUsernameModal
+        open={!username}
+        onClose={() => {}}
+        onChooseUsername={handleChooseUsername}
       />
-      <p className="text-2xl text-light">
-        Feature to make movie watched show the description of a movie (maybe on
-        click?) account management, one user can only vote once per movie
-      </p>
+      <AddModal
+        open={addModalOpen}
+        addMovie={(movie: Movie) => mutateAddMovie(movie)}
+        onClose={() => setAddModalOpen(false)}
+      />
     </>
   );
 }

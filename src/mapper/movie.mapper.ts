@@ -10,7 +10,7 @@ export class MovieMapper {
             cover: firebaseMovie.cover,
             watched: firebaseMovie.watched,
             link: firebaseMovie.link,
-            watchCount: firebaseMovie.watchCount,
+            membersWantingToWatch: firebaseMovie.membersWantingToWatch,
             dateAdded: new Date(firebaseMovie.dateAdded),
             rating: firebaseMovie.rating,
         }
@@ -22,7 +22,7 @@ export class MovieMapper {
             cover: movie.cover,
             watched: movie.watched,
             link: movie.link,
-            watchCount: movie.watchCount,
+            membersWantingToWatch: movie.membersWantingToWatch,
             dateAdded: movie.dateAdded.toISOString(),
             rating: movie.rating,
         }

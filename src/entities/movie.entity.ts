@@ -5,7 +5,7 @@ export interface Movie {
     cover: string,
     watched: boolean,
     link: string,
-    watchCount: number,
+    membersWantingToWatch: string[],
     dateAdded: Date,
     rating: number,
 }
@@ -16,7 +16,7 @@ export interface FirebaseMovie {
     cover: string,
     watched: boolean,
     link: string,
-    watchCount: number,
+    membersWantingToWatch: string[],
     dateAdded: string,
     rating: number,
 }

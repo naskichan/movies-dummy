@@ -6,6 +6,7 @@ import { useState } from 'react';
 import { faCircleCheck as faCircleCheckLight } from '@fortawesome/free-regular-svg-icons';
 import { IconProp } from '@fortawesome/fontawesome-svg-core';
 import Rating from './components/Rating';
+import { useCookies } from 'react-cookie';
 
 interface Props {
   movie: Movie;
@@ -13,15 +14,34 @@ interface Props {
 }
 
 function MovieCard(props: Props) {
-  const [decidedBefore, setDecidedBefore] = useState(false);
+  const [cookies] = useCookies(['username']);
+  const membersWantingToWatch = props.movie.membersWantingToWatch || [];
+  const [decidedBefore, setDecidedBefore] = useState(
+    membersWantingToWatch.includes(cookies.username),
+  );
   function handleIncreaseWatchCount() {
-    props.updateMovie({
-      ...props.movie,
-      watchCount: decidedBefore
-        ? props.movie.watchCount - 1
-        : props.movie.watchCount + 1,
-    });
-    decidedBefore ? setDecidedBefore(false) : setDecidedBefore(true);
+    const newMovie = decidedBefore
+      ? {
+          ...props.movie,
+          membersWantingToWatch: membersWantingToWatch.filter(
+            (member) => member !== cookies.username,
+          ),
+        }
+      : {
+          ...props.movie,
+          membersWantingToWatch: [...membersWantingToWatch, cookies.username],
+        };
+    props.updateMovie(newMovie);
+    setDecidedBefore(!decidedBefore);
+  }
+  function determineNameText(name: string, index: number) {
+    if (index === membersWantingToWatch.length - 1) {
+      return <p key={index}>{name}</p>;
+    }
+    if (index === membersWantingToWatch.length - 2) {
+      return <p key={index}>{name} and </p>;
+    }
+    return <p key={index}>{name}, </p>;
   }
   return (
     <div className="flex flex-col max-w-sm rounded-xl bg-accent border border-gray-600 m-4">
@@ -88,11 +108,21 @@ function MovieCard(props: Props) {
             icon={faCircleCheckSolid}
             className="text-pear text-xl"
           />
-          <p className="text-light text-xl">{props.movie.watchCount}</p>
+          <p className="text-light text-xl">{membersWantingToWatch.length}</p>
           <Tooltip id={`watchCount${props.movie.uuid}`} place="top">
-            {props.movie.watchCount === 1
-              ? `${props.movie.watchCount} person wants to watch this`
-              : `${props.movie.watchCount} people want to watch this`}
+            {membersWantingToWatch.length > 0 ? (
+              <div className="flex flex-row gap-1">
+                {membersWantingToWatch.length <= 3 ? (
+                  membersWantingToWatch.map(determineNameText)
+                ) : (
+                  <>{membersWantingToWatch.length} people</>
+                )}
+                <p>{membersWantingToWatch.length === 1 ? 'wants' : 'want'}</p>
+                <p>to watch this</p>
+              </div>
+            ) : (
+              <p>Noone wants to watch this yet</p>
+            )}
           </Tooltip>
         </div>
       </div>

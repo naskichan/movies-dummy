@@ -1,5 +1,6 @@
 interface Props {
   open: boolean;
+  transparent?: boolean;
   onClose: () => void;
   children: React.ReactNode;
 }
@@ -18,7 +19,13 @@ export default function Modal(props: Props) {
             props.onClose();
           }}
         >
-          <div className="bg-light rounded-xl py-4 px-6">{props.children}</div>
+          <div
+            className={`${
+              props.transparent ? 'bg-transparent' : 'bg-light'
+            } rounded-xl py-4 px-6`}
+          >
+            {props.children}
+          </div>
         </div>
       )}
       ;

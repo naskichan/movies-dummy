@@ -44,7 +44,7 @@ export default function MovieDbPreview(props: Props) {
         ? `https://www.themoviedb.org/t/p/w300_and_h450_bestv2/${movie.poster_path}`
         : '',
       watched: false,
-      watchCount: 0,
+      membersWantingToWatch: [],
       link: `https://www.themoviedb.org/movie/${movie.id}-${movie.title
         .toLowerCase()
         .replace(/ /g, '-')}`,
