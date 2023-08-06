@@ -14,9 +14,11 @@ import { useCookies } from 'react-cookie';
 
 function App() {
   const [addModalOpen, setAddModalOpen] = useState(false);
-  const [cookies, setCookie] = useCookies(['username']);
+  const [cookies, setCookie] = useCookies(['username', 'filter']);
   const [username, setUsername] = useState(cookies.username);
-  const [filter, setFilter] = useState<FilterOption>(FilterOption.ALL);
+  const [filter, setFilter] = useState<FilterOption>(
+    cookies.filter ? (cookies.filter as FilterOption) : FilterOption.ALL,
+  );
   const { data, isLoading } = useQuery(
     queryKeys.movies,
     () => {
@@ -58,6 +60,7 @@ function App() {
       : sorted;
   }
   function handleFilterChange(filter: FilterOption) {
+    setCookie('filter', filter);
     setFilter(filter);
     setMovies(sortMovies(data ? data : [], filter));
   }
