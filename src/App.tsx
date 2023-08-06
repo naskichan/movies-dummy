@@ -11,6 +11,7 @@ import FilterSwitch from './components/FilterSwitch';
 import { FilterOption } from './entities/filter-option.enum';
 import ChooseUsernameModal from './components/ChooseUsernameModal';
 import { useCookies } from 'react-cookie';
+import NextMovieNight from './components/NextMovieNight';
 
 function App() {
   const [addModalOpen, setAddModalOpen] = useState(false);
@@ -82,6 +83,7 @@ function App() {
           <p>{'<3'}</p>
         </div>
       )}
+      <NextMovieNight />
       <div className="font-sans flex px-8 py-4">
         {isLoading ? (
           <p className="text-2xl text-light">Loading...</p>
