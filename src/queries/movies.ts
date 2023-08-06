@@ -13,6 +13,5 @@ export const addMovie = async (movie: Movie): Promise<void> => {
 }
 
 export const updateMovie = async (movie: Movie): Promise<void> => {
-    console.log(movie);
     await firebaseService.updateMovie(movie);
 }

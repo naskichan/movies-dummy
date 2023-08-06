@@ -7,6 +7,7 @@ export interface Movie {
     link: string,
     watchCount: number,
     dateAdded: Date,
+    rating: number,
 }
 
 export interface FirebaseMovie {
@@ -17,4 +18,5 @@ export interface FirebaseMovie {
     link: string,
     watchCount: number,
     dateAdded: string,
+    rating: number,
 }

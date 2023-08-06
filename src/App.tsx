@@ -7,9 +7,12 @@ import { fetchMovies, updateMovie, addMovie } from './queries/movies';
 import { faPlus } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import AddModal from './components/AddModal';
+import FilterSwitch from './components/FilterSwitch';
+import { FilterOption } from './entities/filter-option.enum';
 
 function App() {
   const [modalOpen, setModalOpen] = useState(false);
+  const [filter, setFilter] = useState<FilterOption>(FilterOption.ALL);
   const { data, isLoading } = useQuery(
     queryKeys.movies,
     () => {
@@ -17,8 +20,7 @@ function App() {
     },
     {
       onSuccess: (data) => {
-        console.log(data);
-        setMovies(data);
+        setMovies(sortMovies(data, filter));
       },
     },
   );
@@ -43,12 +45,20 @@ function App() {
       },
     },
   );
+  function sortMovies(data: Movie[], filter: FilterOption): Movie[] {
+    const sorted = data.sort((a, b) => {
+      return b.dateAdded.getTime() - a.dateAdded.getTime();
+    });
+    return filter === FilterOption.UNWATCHED
+      ? sorted.filter((movie) => !movie.watched)
+      : sorted;
+  }
+  function handleFilterChange(filter: FilterOption) {
+    setFilter(filter);
+    setMovies(sortMovies(data ? data : [], filter));
+  }
   const [movies, setMovies] = useState<Movie[]>(
-    data
-      ? data.sort((a, b) => {
-          return b.dateAdded.getTime() - a.dateAdded.getTime();
-        })
-      : [],
+    data ? sortMovies(data, FilterOption.ALL) : [],
   );
   return (
     <>
@@ -63,7 +73,13 @@ function App() {
               </p>
             ) : (
               <div className="flex flex-col pt-16">
-                <p className="text-2xl text-light">All movies</p>
+                <div className="flex items-center gap-4">
+                  <p className="text-2xl text-light">Eligible movies</p>
+                  <FilterSwitch
+                    onFilterChange={handleFilterChange}
+                    selected={filter}
+                  />
+                </div>
                 <div className="flex flex-wrap">
                   {movies.map((movie) => (
                     <MovieCard

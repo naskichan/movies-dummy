@@ -1,11 +1,11 @@
 import { faCircleCheck as faCircleCheckSolid } from '@fortawesome/free-solid-svg-icons';
 import { Movie } from './entities/movie.entity';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { formatDate } from './helpers/date.helper';
 import { Tooltip } from 'react-tooltip';
 import { useState } from 'react';
 import { faCircleCheck as faCircleCheckLight } from '@fortawesome/free-regular-svg-icons';
 import { IconProp } from '@fortawesome/fontawesome-svg-core';
+import Rating from './components/Rating';
 
 interface Props {
   movie: Movie;
@@ -29,7 +29,6 @@ function MovieCard(props: Props) {
         className="flex relative group cursor-pointer"
         onClick={() => {
           window.open(props.movie.link);
-          console.log(props.movie.link);
         }}
       >
         <img
@@ -76,10 +75,8 @@ function MovieCard(props: Props) {
           </p>
         </div>
       </div>
-      <div className="flex pt-8 p-4">
-        <p className="flex-grow text-light text-xl">
-          Added {formatDate(props.movie.dateAdded)}
-        </p>
+      <div className="flex pt-8 p-4 justify-between">
+        <Rating rating={props.movie.rating} />
         <div
           data-tooltip-id={`watchCount${props.movie.uuid}`}
           className={`flex ${

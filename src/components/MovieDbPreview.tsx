@@ -28,11 +28,14 @@ export default function MovieDbPreview(props: Props) {
     refetch();
   }, [props.query]);
   const [selected, setSelected] = useState(0);
+  const filteredMovies = movies
+    ? movies.filter((movie) => movie.poster_path)
+    : [];
   function handleAddMovie() {
-    if (!movies) {
+    if (!filteredMovies) {
       return;
     }
-    const movie = movies[selected];
+    const movie = filteredMovies[selected];
     props.addMovie({
       uuid: '',
       title: movie.title,
@@ -46,6 +49,7 @@ export default function MovieDbPreview(props: Props) {
         .toLowerCase()
         .replace(/ /g, '-')}`,
       dateAdded: new Date(),
+      rating: Math.floor(movie.vote_average * 10),
     });
   }
   return (
@@ -54,21 +58,23 @@ export default function MovieDbPreview(props: Props) {
         <p>Loading...</p>
       ) : (
         <>
-          {!movies || movies?.length === 0 ? (
+          {!filteredMovies || filteredMovies?.length === 0 ? (
             <p>No results found</p>
           ) : (
             <div
-              key={movies[selected].id}
+              key={filteredMovies[selected].id}
               className="flex flex-col gap-2 p-4 border rounded-xl"
             >
-              <p className="text-2xl font-bold">{movies[selected].title}</p>
+              <p className="text-2xl font-bold">
+                {filteredMovies[selected].title}
+              </p>
               <img
                 className="rounded-xl"
-                src={`https://www.themoviedb.org/t/p/w300_and_h450_bestv2/${movies[selected].poster_path}`}
-                alt={movies[selected].title}
+                src={`https://www.themoviedb.org/t/p/w300_and_h450_bestv2/${filteredMovies[selected].poster_path}`}
+                alt={filteredMovies[selected].title}
               />
               <p className="text-xl w-96 text-ellipsis">
-                {movies[selected].overview}
+                {filteredMovies[selected].overview}
               </p>
               <div className="flex justify-between">
                 <button
@@ -86,7 +92,7 @@ export default function MovieDbPreview(props: Props) {
                 />
 
                 <button
-                  disabled={selected === movies.length - 1}
+                  disabled={selected === filteredMovies.length - 1}
                   className="rounded-xl bg-rose px-4 text-light text-2xl"
                   onClick={() => setSelected(selected + 1)}
                 >

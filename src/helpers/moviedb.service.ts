@@ -10,7 +10,6 @@ export class MovieDbService {
         }
     });
     async searchMovie(query: string): Promise<MovieDbResult[]> {
-        console.log(`Fetching results for ${query}`);
         const result = await this.axiosInstance.get('search/movie', {
             params: {
                 query

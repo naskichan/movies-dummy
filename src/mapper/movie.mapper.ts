@@ -12,6 +12,7 @@ export class MovieMapper {
             link: firebaseMovie.link,
             watchCount: firebaseMovie.watchCount,
             dateAdded: new Date(firebaseMovie.dateAdded),
+            rating: firebaseMovie.rating,
         }
     }
     toDbModel(movie: Movie): FirebaseMovie {
@@ -23,6 +24,7 @@ export class MovieMapper {
             link: movie.link,
             watchCount: movie.watchCount,
             dateAdded: movie.dateAdded.toISOString(),
+            rating: movie.rating,
         }
     }
 }

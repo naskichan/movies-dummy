@@ -1,6 +1,5 @@
 export function formatDate(date: Date): string {
   const offsetSeconds = new Date().getTime() - date.getTime();
-  console.log({now: new Date(), date, offsetSeconds});
   const offsetMinutes = Math.floor(offsetSeconds / 1000 / 60);
   const offsetHours = Math.floor(offsetMinutes / 60);
   const offsetDays = Math.floor(offsetHours / 24);

@@ -26,10 +26,8 @@ export class FireBaseService {
     }
 
     async addMovie(movie: Movie): Promise<void> {
-        console.log('adding movie', movie);
         const dbRef = ref(this.db,`movies/${uuid()}`);
         const dbModel = this.mapper.toDbModel(movie);
-        console.log('writing to db', dbModel)
         set(dbRef, dbModel);
     }
 
