@@ -1,9 +1,11 @@
-import { faCircleCheck } from '@fortawesome/free-solid-svg-icons';
+import { faCircleCheck as faCircleCheckSolid } from '@fortawesome/free-solid-svg-icons';
 import { Movie } from './entities/movie.entity';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { formatDate } from './helpers/date.helper';
 import { Tooltip } from 'react-tooltip';
 import { useState } from 'react';
+import { faCircleCheck as faCircleCheckLight } from '@fortawesome/free-regular-svg-icons';
+import { IconProp } from '@fortawesome/fontawesome-svg-core';
 
 interface Props {
   movie: Movie;
@@ -40,7 +42,7 @@ function MovieCard(props: Props) {
             <>
               <FontAwesomeIcon
                 data-tooltip-id={`watched${props.movie.uuid}`}
-                icon={faCircleCheck}
+                icon={faCircleCheckSolid}
                 onClick={(e) => {
                   e.stopPropagation();
                   props.updateMovie({ ...props.movie, watched: false });
@@ -55,7 +57,7 @@ function MovieCard(props: Props) {
             <>
               <FontAwesomeIcon
                 data-tooltip-id={`markAsWatched${props.movie.uuid}`}
-                icon={faCircleCheck}
+                icon={faCircleCheckLight as IconProp}
                 className="text-light hover:opacity-100 text-4xl opacity-50 transition"
                 onClick={(e) => {
                   e.stopPropagation();
@@ -85,7 +87,10 @@ function MovieCard(props: Props) {
           } py-1 px-2 rounded-xl items-center gap-2 cursor-pointer hover:bg-gray-400 transition`}
           onClick={handleIncreaseWatchCount}
         >
-          <FontAwesomeIcon icon={faCircleCheck} className="text-pear text-xl" />
+          <FontAwesomeIcon
+            icon={faCircleCheckSolid}
+            className="text-pear text-xl"
+          />
           <p className="text-light text-xl">{props.movie.watchCount}</p>
           <Tooltip id={`watchCount${props.movie.uuid}`} place="top">
             {props.movie.watchCount === 1
