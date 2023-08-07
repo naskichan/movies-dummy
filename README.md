@@ -11,4 +11,4 @@ npm run deploy
 
 
 Endpoint for lsmedia data:
-[11902d8cdc46e22312447e3be9b1e550/m.jsonhttps://images.nyan.mx/11902d8cdc46e22312447e3be9b1e550/m.json](https://images.nyan.mx/11902d8cdc46e22312447e3be9b1e550/m.json)https://images.nyan.mx/11902d8cdc46e22312447e3be9b1e550/m.json
+[11902d8cdc46e22312447e3be9b1e550/m.jsonhttps://images.nyan.mx/11902d8cdc46e22312447e3be9b1e550/m.json](https://images.nyan.mx/11902d8cdc46e22312447e3be9b1e550/m.json)
